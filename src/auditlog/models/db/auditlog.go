@@ -11,18 +11,21 @@ type AuditLog struct {
 	Domain         string `json:"domain"`
 	Ip             string `json:"ip"`
 	OpEvent        string `json:"op_event"`
-	OpEventContent string `json:"op_event _content"`
+	OpEventContent string `json:"op_event_content"`
 }
 
-func (auditLog *AuditLog) Insert() {
+func (auditLog *AuditLog) Insert() error {
 	o := orm.NewOrm()
 	o.Begin()
 	_, err := o.Insert(auditLog)
 	if err != nil {
 		err = o.Rollback()
+		return err
 	} else {
 		err = o.Commit()
+		return err
 	}
+	return nil
 }
 
 func (auditLog *AuditLog) Query() *[]AuditLog {

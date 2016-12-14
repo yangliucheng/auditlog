@@ -29,6 +29,7 @@ func InitDB(dataBase, dataSource string) {
 
 	// model register
 	orm.RegisterModel(new(AuditLog))
+	orm.RegisterModel(new(OperationDes))
 	// param01 alias name of table
 	// param02 forced to create table , table create when install our platment
 	// param02 whether or not show info when create table,true->not show
