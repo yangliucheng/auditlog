@@ -4,6 +4,8 @@ import (
 	"auditlog/models/db"
 	"encoding/json"
 	"github.com/astaxie/beego"
+	"strconv"
+	"time"
 )
 
 type MainController struct {
@@ -15,6 +17,10 @@ func (c *MainController) WriteLog() {
 	var auditLog db.AuditLog
 	body := c.Ctx.Input.RequestBody
 	json.Unmarshal(body, &auditLog)
+	createTime64, _ := strconv.ParseInt(auditLog.CreateTime, 10, 64)
+	timeUnix := time.Unix(createTime64, 0)
+	layout := "2006-01-02 15:04:05"
+	auditLog.CreateTime = timeUnix.Format(layout)
 	err := auditLog.Insert()
 	if err != nil {
 		SetOutput(c.Ctx, 304, []byte(err.Error()))
