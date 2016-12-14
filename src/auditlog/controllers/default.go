@@ -3,7 +3,6 @@ package controllers
 import (
 	"auditlog/models/db"
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -15,7 +14,6 @@ type MainController struct {
 func (c *MainController) WriteLog() {
 	var auditLog db.AuditLog
 	body := c.Ctx.Input.RequestBody
-	fmt.Println("====body====", string(body))
 	json.Unmarshal(body, &auditLog)
 	err := auditLog.Insert()
 	if err != nil {
