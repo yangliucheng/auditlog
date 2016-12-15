@@ -29,7 +29,11 @@ func (c *MainController) WriteLog() {
 }
 
 func (c *MainController) GetLog() {
-	count, _ := beego.AppConfig.Int("count")
+
+	count, _ := c.GetInt("page_count")
+	if count == 0 {
+		count, _ = beego.AppConfig.Int("count")
+	}
 	auditLoggers := make([]AuditLogger, 0)
 	var auditLog db.AuditLog
 	var operationDes db.OperationDes
