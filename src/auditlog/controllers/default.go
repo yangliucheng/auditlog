@@ -29,12 +29,12 @@ func (c *MainController) WriteLog() {
 }
 
 func (c *MainController) GetLog() {
-
+	count, _ := beego.AppConfig.Int("count")
 	auditLoggers := make([]AuditLogger, 0)
 	var auditLog db.AuditLog
 	var operationDes db.OperationDes
 	operationDesmap := operationDes.Query()
-	auditLogs := auditLog.Query()
+	auditLogs := auditLog.Query(count)
 	for _, a := range *auditLogs {
 		auditLogger := new(AuditLogger)
 		auditLogger.CreateTime = a.CreateTime
@@ -42,7 +42,10 @@ func (c *MainController) GetLog() {
 		auditLogger.Domain = a.Domain
 		auditLogger.Ip = a.Ip
 		auditLogger.OpEvent = a.OpEvent
-		auditLogger.Description = operationDesmap[a.OpEvent]
+		auditLogger.Description = ""
+		if value, ok := operationDesmap[a.OpEvent]; ok {
+			auditLogger.Description = value
+		}
 		auditLoggers = append(auditLoggers, *auditLogger)
 	}
 	auditLoggersJson, err := json.Marshal(auditLoggers)

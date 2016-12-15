@@ -23,5 +23,7 @@ func SetOutput(ctx *context.Context, status int, body interface{}) {
 		ctx.Output.Body([]byte(body.(string)))
 	case error:
 		ctx.Output.Body([]byte(body.(error).Error()))
+	case []byte:
+		ctx.Output.Body(body.([]byte))
 	}
 }

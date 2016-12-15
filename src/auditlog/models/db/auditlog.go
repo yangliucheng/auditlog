@@ -6,7 +6,7 @@ import (
 
 type AuditLog struct {
 	Id             int    `orm:"auto"`
-	CreateTime     string `json:"create_time"`
+	CreateTime     string `orm:"column(create_time)" json:"create_time"`
 	OpId           string `json:"op_id"`
 	Domain         string `json:"domain"`
 	Ip             string `json:"ip"`
@@ -28,9 +28,9 @@ func (auditLog *AuditLog) Insert() error {
 	return nil
 }
 
-func (auditLog *AuditLog) Query() *[]AuditLog {
+func (auditLog *AuditLog) Query(count int) *[]AuditLog {
 	var auditLogs []AuditLog
 	o := orm.NewOrm()
-	o.QueryTable(auditLog).All(&auditLogs)
+	o.QueryTable(auditLog).OrderBy("-create_time").Limit(count).All(&auditLogs)
 	return &auditLogs
 }

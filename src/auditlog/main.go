@@ -3,6 +3,7 @@ package main
 import (
 	"auditlog/models/db"
 	_ "auditlog/routers"
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
