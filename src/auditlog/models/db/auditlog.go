@@ -31,6 +31,6 @@ func (auditLog *AuditLog) Insert() error {
 func (auditLog *AuditLog) Query(count int) *[]AuditLog {
 	var auditLogs []AuditLog
 	o := orm.NewOrm()
-	o.QueryTable(auditLog).OrderBy("-create_time").Limit(count).All(&auditLogs)
+	o.QueryTable(auditLog).Exclude("op_event","").OrderBy("-create_time").Limit(count).All(&auditLogs)
 	return &auditLogs
 }
